@@ -1,0 +1,66 @@
+digraph "Nodo1" { 
+
+ fontname="cyan"
+
+node [fontname="cyan"]
+
+edge [fontname="cyan"]
+
+graph [newrank = true , nodesep = 0.8, overlap = true, splines = false]
+
+node [fixedsize = false, fontsize = 24, height = 2, shape = "septagon", style = "filled,setlinewidth(5)", width = 2.2, shape = "septagon",color = "black" , fillcolor = "cornflowerblue"]
+
+edge [ arrowsize = 0.5, weight = 2, style = "filled,setlinewidth(5)"row = func, arrowhead = 0.1,color = "black", arrowhead = "", row = func ]
+
+subgraph Operaciones {
+No0 [label = "suma=5"]
+No0a [label = "2"]
+No0b [label = "3"]
+No0->No0a
+No0->No0b
+No1 [label = "resta=5"]
+No1a [label = "10"]
+No1b [label = "5"]
+No1->No1a
+No1->No1b
+
+No1b -> No0
+
+}subgraph Operaciones {
+No2 [label = "raiz=3.0"]
+No2a [label = "9"]
+No2b [label = "2"]
+No2->No2a
+No2->No2b
+No3 [label = "potencia=8.0"]
+No3a [label = "2"]
+No3b [label = "3.0"]
+No3->No3a
+No3->No3b
+No4 [label = "multiplicacion=32.0"]
+No4a [label = "4"]
+No4b [label = "8.0"]
+No4->No4a
+No4->No4b
+
+No4b -> No3
+No3b -> No2
+
+}subgraph Operaciones {
+No5 [label = "seno=0.8939966636005579"]
+No5a [label = "90"]
+No5b [label = "0"]
+No5->No5a
+No5->No5b
+No6 [label = "suma=6.213996663600558"]
+No6a [label = "0.8939966636005579"]
+No6b [label = "5.32"]
+No6->No6a
+No6->No6b
+
+No6a -> No5
+
+}subgraph Operaciones {
+
+
+}}
