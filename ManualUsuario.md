@@ -1,5 +1,5 @@
 # Laboratorio de lenguajes Formales y de programacion
-## Practica1
+## Proyecto1
 ### Segundo Semestre 2023
 ```js
 Universidad San Carlos de Guatemala
