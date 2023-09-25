@@ -1,5 +1,5 @@
 # Laboratorio de lenguajes Formales y de programacion
-## Practica1
+## Proyecto1
 ### Segundo Semestre 2023
 ```js
 Universidad San Carlos de Guatemala
@@ -9,57 +9,62 @@ Correo: jemimasolmaira2425@gmail.com
 ```
 ---
 ## Descripción del Proyecto
-La siguiente practica consta del  desarrollo de un programa en la consola, utilizando Python,  en donde se puedan realizar procesos de inventario, tales como ingresar datos, y los movimientos (ventas y agregar stock), asi como tambien obtener un informe final.
+El siguiente proyecto consta del  desarrollo de un programa utilizando Python, su funcion principal es realizar calculos matematicos y ser presentados en forma de grafos, sin embargo los datos que ingresen al programa son analizados previamente, el programa incluye una herramienta diseñada para analizar y dividir un flujo de caracteres de entrada en unidades léxicas significativas, conocidas como tokens según las reglas gramaticales y las expresiones regulares definidas 
 
 
 ## Objetivos
 * Objetivo General
-    * Utilizar las distintas herramientas y metodos de programacion para obtener una solucion al programa que se solicita 
+    * Realizar operaciones matematicas , utilizando el formato Json para obtener los resultados en forma de grafos 
 * Objetivos Específicos
-    * Conocer las principales funciones de phyton para trabajar en consola
-    * Utilizar las funciones de abrir y escribir un archivo en phyton
-    * Utilizar distintas extensiones para realizar las acciones correspondientes.
+    * Implementar un analizador lexico para la lectura de datos de un archivo Json
+    * Implementar un AFD para el proceso de deteccion de tokens correctos e incorrectos
+    * Hacer uso de grafos para visualizar los resultados de las operaciones matematicas 
 
 ---
 ## Manual Tecnico
-El siguiente codigo es para gestionar un inventario, por lo que partimos de un menu inicial que nos permitira elegir opciones que nos llevaran a realizar las distintas acciones que necesitamos:
 
-![Menu](https://i.ibb.co/LNLJmHb/Menu.jpg)
+El archivo interfaz.py contiene todo el desarrollo de la interfaz grafica , el cual es realizada en con la libreria tkinder consta de 3 botones y un menu desplegable con las funciones para manejar el archivo.
 
-utilizamos un  bucle while para volver al Menu despues de haber terminado todas las operaciones en un opcion para poder elegir realizar otra accion, para detener el ciclo deberemos elegir la opcion 4 para salir.
+![Tkinder](https://i.ibb.co/GnBqJLy/ventana.jpg)
 
-Debido a que trabajaremos con productos la mejor manera de gestionar todos los datos es usando una clase llamada productos que contiene la informacion
+en la interfaz grafica  tenemos las funciones que se usan para las opciones de abrir archivo, guardar el archivo asi tambien para guardar una copia del archivo, el archivo debe ser de formato .json
 
-![ClaseProducto](https://i.ibb.co/7xfqfhT/Objetoproducto.jpg)
+![MenuDesplegable](https://i.ibb.co/4267w2L/Menu-desplegable.jpg)
 
-Para la lectura de nuestros datos utilizaremos un archivo de texto, con la extension de .inv para agregar el inventario nuevo, y una extension .mov para los movimientos, ambos deberan estar en la carpeta de la practica.
+las 3 funciones principales de nuestro programa son:  Analizador, Errores, y Reportes
 
-![Extensiones](https://i.ibb.co/wNKk4xq/extensiones.jpg) 
+![Funciones Principales](https://i.ibb.co/C09b9DN/Funciones-principales.jpg)
 
-Para la primera opcion , se leera el inventario Inicial, el programa pediria un input para ingresar el nombre del archivo , despues de haber validado la direccion nos llevara a un metodo en donde los datos del archivo .inv seran leidos y trasladados a una lista del objeto Productos
+El analizador es la herramienta que nos permite procesar el archivo json, y evaluar sus errores antes de realizar todas las operaciones matematicas
 
-![InventarioInicial](https://i.ibb.co/SRvF53f/leer-Inicial.jpg)
+Para el analisis del archivo, se utiliza un AFD que nos permite clasificar los tokens encontrados dentro del texto analizar los tokens para buscar erroes, y clasificar las palabras correctas en una tabla de tokens y las incorrectas en una tabla de errores , para abordar el proceso empezamos viendo la gramatica permitida: 
 
-La segunda opcion es para leer los movimientos que se haran en el inventario,  el programa pedira un input para ingresar el nombre del archivo, despues de haber vaidado la direccion nos llevara a un metodo donde los datos del archivo .mov seran leidos
+* Gramatica
 
-![Movimientos](https://i.ibb.co/z5pjmY5/Movimientos.jpg) 
+La gramatica permitida es la que se presenta en el siguiente cuadro: 
 
-Para realizar los cambios correspondientes en el invetario primero se validara que el archivo exista, si no existe mostrara el mensaje de error, en caso de que si exista el siguiente paso sera definir si se trata de una venta o de agregar stock:
+![Gramatica](https://i.ibb.co/xFhz6LS/Gramatica.jpg)
 
-![ValidacionProducto](https://i.ibb.co/Bn4BPRg/Validacion.jpg) 
+* AFD
 
-El programa nos llevara a dos metodos dependiendo de la accion que se necesite hacer, si es "agregar stock" entonces se validara la ubicacion para luego sumar los productos: 
+Para realizar este proceso se utiliza la clase Scanner, en donde encontramos todas las funciones que nos permiten dividir los tokens dependiendo de sus patrones de texto, cual token que no se incluya dentro de nuestra gramatica sera considerado un error e incluido en la tabla de errores
 
-![AgregarStock](https://i.ibb.co/K23YbT3/Agregar-Stock.jpg)  
+![Tokens](https://i.ibb.co/RvHw3V3/Analisis-de-tokens.jpg) 
 
-Para la venta tambien se validara la ubicacion para luego restar los productos:
+El analisis se realiza letra por letra , las palabras se comparan con los patrones permitidos, en caso de encontrar alguna letra que no sea permitida se eliminara del formato inicial, y se incluira en la tabla de errores, al finalizar se creara un nuevo archivo json libre de errores.
+![Analisis](https://i.ibb.co/GkHQkFF/Busqueda-de-errores.jpg)
 
-![Venta](https://i.ibb.co/3h40jyK/vender.jpg) 
 
-En cada una de las opciones se puede ver un reporte del inventario en la consola con ayuda del metodo de revision de inventario: 
+Al finalizar el analisis la tabla de errores se podra visualizar por medio de un formato .json 
 
-![RevisionInventario](https://i.ibb.co/wJFcn1c/revisar-inventario.jpg)  
+![Errores](https://i.ibb.co/MVTxsyL/Errores-en-archivo-Json.jpg)
 
-Para la opcion 3, es en donde tenemos la funcionalidad de guardar los datos en un txt, con ayuda de la funcion de Imprimir archivo
+Cuando el archivo .json se encuentre libre de cualquier error se podra procesar cada dato dentro de nuestra tabla e tokens para crear una tabla de resultados con todas las operaciones matematicas correspondientes
+![TablaResultados](https://i.ibb.co/2k3vWzX/Tabla-de-resultados.jpg)
 
-![ImprimirInventario](https://i.ibb.co/7NHCkBx/Imprimirentxt.jpg)   
+Toda la informacion obtenida se procesara en una clase Math que incluye todas las operaciones que necesitamos procesar
+![Matematica](https://i.ibb.co/gjKXsqT/Operar.jpg) 
+
+Para poder obtener un reporte visual de los resultados se hace uso de los grafos por medio de la herramienta graphiz, para ello se usan dos nodos para representar el valor1 y el valor2, las configuraciones del grafo seran descritas en el archivo json 
+![Grafica](https://i.ibb.co/zrBrHvp/class-grafica.jpg) 
+

@@ -1,13 +1,18 @@
 import tkinter as tk
+import os
 from tkinter import filedialog
 from tkinter import messagebox
 from lectura import Scanner
 
 archivoGlobal = ""
+leer = Scanner()
 
 def abrir_archivo():
     archivo = filedialog.askopenfilename(filetypes=[("Archivos de texto", "*.json")])
-    archivoGlobal = archivo
+    global archivoGlobal 
+    archivoGlobal= os.path.basename(archivo)
+    
+    print("el archvio es: " + archivoGlobal)
     if archivo:
         with open(archivo, 'r') as file:
             contenido.delete(1.0, tk.END)
@@ -24,14 +29,34 @@ def guardar_como():
     if archivo:
         with open(archivo, 'w') as file:
             file.write(contenido.get(1.0, tk.END))
+ 
+ 
+def analizar():
+    archivo = archivoGlobal
+    print(archivo)
+    cont = ""
+    if archivo:
+        with open(archivo, 'r') as file:
+            cont = file.read()
             
-def analizarclick():
-    messagebox.showinfo("Analisis", "Analisis realizado con exito")
+    leer.analisis(cont)
     
-def erroresclick():
-    messagebox.showinfo("Errores", "No se encontraron errores")
+    archivo2 = "operaciones" + ".json"
+    if archivo2:
+        with open(archivo2, 'r') as file:
+            contenido.delete(1.0, tk.END)
+            contenido.insert(tk.END, file.read())
+
+def errores(nombrearchivo):
+    leer.mErrores(nombrearchivo)
+
+def reportes():
+    global archivoGlobal
+    if archivoGlobal == "":
+        messagebox.showinfo("Error", "No se ha seleccionado ningun archivo")
+        return
     
-def reportesclick():
+    
     archivo = "reportes" + ".json"
     if archivo:
         with open(archivo, 'w') as file:
@@ -43,11 +68,41 @@ def reportesclick():
         with open(archivo, 'r') as file:
             cont = file.read()
             
-    leer = Scanner()
     leer.Analizar(cont)
     leer.eliminarSignos()
     leer.Arbol()
     
+    
+ 
+ 
+            
+def analizarclick():
+    global archivoGlobal
+    if archivoGlobal == "":
+        messagebox.showinfo("Error", "No se ha seleccionado ningun archivo")
+        return
+    
+    analizar()
+    messagebox.showinfo("Analisis", "Analisis realizado con exito")
+    
+    
+def erroresclick():
+    global archivoGlobal
+    if archivoGlobal == "":
+        messagebox.showinfo("Error", "No se ha seleccionado ningun archivo")
+        return
+    
+    errores("errores")
+    messagebox.showinfo("Archivo de Errores", "Archivo de Errores creado con exito")
+    
+def reportesclick():
+    global archivoGlobal
+    if archivoGlobal == "":
+        messagebox.showinfo("Error", "No se ha seleccionado ningun archivo")
+        return
+    
+    reportes()
+    messagebox.showinfo("Reportes", "Archivo de reportes realizado con exito")   
     
 
 def salir():

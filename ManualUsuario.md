@@ -9,57 +9,52 @@ Correo: jemimasolmaira2425@gmail.com
 ```
 ---
 ## Descripción del Proyecto
-La siguiente practica consta del  desarrollo de un programa en la consola, utilizando Python,  en donde se puedan realizar procesos de inventario, tales como ingresar datos, y los movimientos (ventas y agregar stock), asi como tambien obtener un informe final.
+El silguiente programa desarrollado en pyton es un programa que realiza operaciones matematicas desde un formato .json, sin embargo antes de realizar el proceso matematico se debera analizar el archivo, con la funcion del analizador , para encontrar posibles errores, al finalizar todo el proceso matematico se podran visualizar los resultados en un grafo con la ayuda de graphiz
 
 
 ## Objetivos
 * Objetivo General
-    * Utilizar las distintas herramientas y metodos de programacion para obtener una solucion al programa que se solicita 
+    * Realizar operaciones matematicas desde un archivo .jason
 * Objetivos Específicos
-    * Conocer las principales funciones de phyton para trabajar en consola
-    * Utilizar las funciones de abrir y escribir un archivo en phyton
-    * Utilizar distintas extensiones para realizar las acciones correspondientes.
+    * Revisar archivos .json y los posibles errores de texto  
+    * Visualizar los posibles errores del archivo, en un formato .json
+    * Visualizar los resultados en grafos.
 
 ---
-## Manual Tecnico
-El siguiente codigo es para gestionar un inventario, por lo que partimos de un menu inicial que nos permitira elegir opciones que nos llevaran a realizar las distintas acciones que necesitamos:
+## Manual de Usuario
 
-![Menu](https://i.ibb.co/LNLJmHb/Menu.jpg)
+En el programa se debera ingresar un archivo .json
 
-utilizamos un  bucle while para volver al Menu despues de haber terminado todas las operaciones en un opcion para poder elegir realizar otra accion, para detener el ciclo deberemos elegir la opcion 4 para salir.
+![Ejemplojson](https://i.ibb.co/QMzDtTg/ejemplo-en-jason.jpg)  
 
-Debido a que trabajaremos con productos la mejor manera de gestionar todos los datos es usando una clase llamada productos que contiene la informacion
+El cual como en la imagen puede incluir algunos errores los cuales el programa podra analizarlos mas adelante
 
-![ClaseProducto](https://i.ibb.co/7xfqfhT/Objetoproducto.jpg)
+La interfaz principal del programa se muestra de la siguiente manera:
 
-Para la lectura de nuestros datos utilizaremos un archivo de texto, con la extension de .inv para agregar el inventario nuevo, y una extension .mov para los movimientos, ambos deberan estar en la carpeta de la practica.
+![InterfazPrincipal](https://i.ibb.co/DY1wcn9/Interfaz-principal.jpg) 
 
-![Extensiones](https://i.ibb.co/wNKk4xq/extensiones.jpg) 
+Contamos un menu desplegable el cual mostrara las opciones para manejar el archivo .json, podremos abrir el archivo, guardar los cambios, o incluso guardar una copia del archivo
 
-Para la primera opcion , se leera el inventario Inicial, el programa pediria un input para ingresar el nombre del archivo , despues de haber validado la direccion nos llevara a un metodo en donde los datos del archivo .inv seran leidos y trasladados a una lista del objeto Productos
+![MenuDesplegable](https://i.ibb.co/pvWp99w/Menu-desplegable.jpg) 
 
-![InventarioInicial](https://i.ibb.co/SRvF53f/leer-Inicial.jpg)
+Al abrir el archivo .json podremos visualizar el contenido en el editor de texto del programa, antes de realizar las operaciones matematicas se debera analizar el archivo para buscar los posibles errores
 
-La segunda opcion es para leer los movimientos que se haran en el inventario,  el programa pedira un input para ingresar el nombre del archivo, despues de haber vaidado la direccion nos llevara a un metodo donde los datos del archivo .mov seran leidos
+![Archivoabierto](https://i.ibb.co/PYLpsWP/archivo-abierto.jpg)
 
-![Movimientos](https://i.ibb.co/z5pjmY5/Movimientos.jpg) 
+Al presionar el boton de analizar se analizara cada letra del texto en busqueda de errores y al finalizar mostrara el nuevo archivo sin errores en el editor de texto
 
-Para realizar los cambios correspondientes en el invetario primero se validara que el archivo exista, si no existe mostrara el mensaje de error, en caso de que si exista el siguiente paso sera definir si se trata de una venta o de agregar stock:
+![Analisis](https://i.ibb.co/QdnTZjy/Analisis-Realizado.jpg)  
 
-![ValidacionProducto](https://i.ibb.co/Bn4BPRg/Validacion.jpg) 
+Para visualizar los errores del archivo, presionamos el boton de errores
 
-El programa nos llevara a dos metodos dependiendo de la accion que se necesite hacer, si es "agregar stock" entonces se validara la ubicacion para luego sumar los productos: 
+![Errores](https://i.ibb.co/pQ9QZxX/Errores-Exito.jpg)
 
-![AgregarStock](https://i.ibb.co/K23YbT3/Agregar-Stock.jpg)  
+El resultado sera un archivo .json con la descripcion de todos los errores encontrados
+![ErroresJson](https://i.ibb.co/Mgy9qf5/errores-en-json.jpg) 
 
-Para la venta tambien se validara la ubicacion para luego restar los productos:
+y por ultimo se realizan todas las operaciones matematicas presionando el boton reportes, el resultado sera un archivo.svg donde se podran visualizar todos los resultados en un grafo
 
-![Venta](https://i.ibb.co/3h40jyK/vender.jpg) 
+![Reportes](https://i.ibb.co/WywPhPq/Reportes.jpg)
 
-En cada una de las opciones se puede ver un reporte del inventario en la consola con ayuda del metodo de revision de inventario: 
-
-![RevisionInventario](https://i.ibb.co/wJFcn1c/revisar-inventario.jpg)  
-
-Para la opcion 3, es en donde tenemos la funcionalidad de guardar los datos en un txt, con ayuda de la funcion de Imprimir archivo
-
-![ImprimirInventario](https://i.ibb.co/7NHCkBx/Imprimirentxt.jpg)   
+En el grafo podremos observar todos los resultados de todas las operaciones realizadas, la configuracion del grafo, se encontrara en el archivo .json, en el cual se describira la fuente, la forma, y el color de los nodos.
+![Graphiz](https://i.ibb.co/0q1qbWm/Resultado-graphiz.jpg)

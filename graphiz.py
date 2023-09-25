@@ -40,10 +40,16 @@ class Grafica:
     def datos(self, operacion, res, a , b):
         nodo = "No" + str(self.contador)
         string = nodo + " [label = " + '"' + str(operacion)+ "=" + str(res) + '"' + "]" + "\n"
-        string += nodo + "a" + " [label = " + '"' + str(a) + '"' + "]" + "\n"
-        string += nodo + "b" + " [label = " + '"' + str(b) + '"' + "]" + "\n"
-        string += nodo + "->" + nodo + "a" + "\n"
-        string += nodo + "->" + nodo + "b" + "\n"
+        
+        if operacion in ["seno", "coseno", "inverso", "tangente"]:
+            string += nodo + "a" + " [label = " + '"' + str(a) + '"' + "]" + "\n"   
+            string += nodo + "->" + nodo + "a" + "\n"
+        else:
+            string += nodo + "a" + " [label = " + '"' + str(a) + '"' + "]" + "\n"
+            string += nodo + "b" + " [label = " + '"' + str(b) + '"' + "]" + "\n"
+            string += nodo + "->" + nodo + "a" + "\n"
+            string += nodo + "->" + nodo + "b" + "\n"
+        
         self.contador += 1
         return string
     

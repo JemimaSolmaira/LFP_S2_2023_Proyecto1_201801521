@@ -1,26 +1,26 @@
 {
-  "operac/iones": [
+  "opekraciones": [
     {
-      "opera#cion": "resta",
+      "operacion": "rest/a",
       "valor1": 10,
       "valor2": [
         {
-          "opera#cion": "suma",
+          "operacion": "division",
           "valor1": 2,
           "valor2": 3
         }
-      ]
+      ]+
     },
     {
-      "operacion": "multipl#icacion",
+      "operacion": "multiplicacion",
       "valor1": 4,
       "valor2": [
         {
-          "operacion": "potencia",
+          "operacion": "pot/encia",
           "valor1": 2,
-          "valor2": [{ "operacion": "raiz", "valor1": 9, "valor2": 2 }]
+          "val/or2": [{ "operacion": "inverso", "valor1": 9 }]
         }
-      ]
+      ]/
     },
     {
       "operacion": "suma",
@@ -33,7 +33,7 @@
       "texto": "ejemplo de operaciones",
       "fondo": "cornflowerblue",
       "fuente": "cyan",
-      "forma": "septagon"
+      "forma": "ellipse"
     }
   ]
 }

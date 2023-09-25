@@ -26,6 +26,8 @@ class Math:
             resultado = self.operciones.tangente(a)
         elif operacion == "modulo":
             resultado = self.operciones.modulo(a, b)
+        
+        resultado = round(resultado, 2)
             
         return resultado
         

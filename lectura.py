@@ -1,7 +1,6 @@
 from operadores import operadores
 from errores import errores
 from inf import inf  
-from operar import operar
 from Math import Math
 from operadores import operadores
 from graphiz import Grafica
@@ -18,46 +17,23 @@ class Scanner:
         self.configuracion = []
         self.tokens2 = []
      
-    def textos(self,dato, i):
-        token = ""
-        for char in dato:
-            if char == '"':
-                return [token, i]
-            token += char
-            i += 1
-        print("Error: string no cerrado")
+    def analisis (self, contenido):
+        self.Analizar(contenido)
+        self.eliminarSignos()
+        self.AnalisisTabla()
+        self.Ndatos()
 
-
-# formar un numero
-    def numeros(self, dato, i):
-        token = ""
-        isDecimal = False
-        for char in dato:
-            if char.isdigit():
-                token += char
-                i += 1
-            elif char == "." and not isDecimal:
-                token += char
-                i += 1
-                isDecimal = True
-            else:
-                break
-        if isDecimal:
-            return [float(token), i]
-        return [int(token), i]
-
-
-
+    def mErrores(self, nombreArchivo):
+        self.crearErrores(nombreArchivo)
+    
+    
+    #Transformacion de la cadena de texto a tokens, y se agregan los primeros errores
+    #Se agregan los tokens a la lista de tokens
     def Analizar(self, dato):
-
         line = 1
         col = 1
-
-
         i = 0
-
         while i < len(dato):
-
             char = dato[i]
             if char.isspace():
                 if char == "\n":
@@ -99,27 +75,46 @@ class Scanner:
                 )
                 i += 1
                 col += 1
-                
-       # for i in self.tokens:
-           # print(str(i.token))
- 
-    
     
 
+    #token para los textos
+    def textos(self,dato, i):
+        token = ""
+        for char in dato:
+            if char == '"':
+                return [token, i]
+            token += char
+            i += 1
+        print("Error: string no cerrado")
 
 
+    # token para los numeros
+    def numeros(self, dato, i):
+        token = ""
+        isDecimal = False
+        for char in dato:
+            if char.isdigit():
+                token += char
+                i += 1
+            elif char == "." and not isDecimal:
+                token += char
+                i += 1
+                isDecimal = True
+            else:
+                break
+        if isDecimal:
+            return [float(token), i]
+        return [int(token), i]
+
+    
+    #limpiar signos en la tabla de tokens
     def eliminarSignos(self):
         for i in self.tokens:
             if i.token == "," or i.token == ":" :
                 self.tokens.remove(i)
                   
-        print("tokens sin signos")    
-        #for i in self.tokens:
-            #print(str(i.token) + " " + str(i.fila) + " " + str(i.columna))
-            
-            
-            
-
+                       
+    #obtener datos de la lista de tokens a la lista de resultados
     def get_instruccion(self):
         operacion = None
         value1 = None
@@ -136,49 +131,39 @@ class Scanner:
                 break
             
             token = self.tokens.pop(0)
-            #print("VALUE: " + str(token.token))
 
             if token.token == "operacion":
-                # eliminar el :
                 operacion = self.tokens.pop(0).token
-                #print("operacion: " + str(operacion))
             elif token.token == "valor1":
-                # eliminar el :
                 value1 = self.tokens.pop(0).token
                 if value1 == "[":
                     value1 = self.get_instruccion()
                     lado = "a"
-                    
-                #print("valor1: " + str(value1))
             elif token.token == "valor2":
-                # eliminar el :
                 value2 = self.tokens.pop(0).token
 
                 if value2 == "[":
                     value2 = self.get_instruccion()  
                     lado = "b" 
-                #print("valor2: " + str(value2))  
             elif token.token in ["texto", "fondo", "fuente", "forma"]:
                 config = self.tokens.pop(0).token
                 self.configuracion.append(config)
 
             else:
                 pass
-                #errores.append("[1;31;40m Error: token desconocido:" + str(token) )
-                # print("\033[1;31;40m Error: token desconocido:", token, "\033[0m")
 
            
             if operacion and value1 and value2:
                 resultado = self.matematica.operar(operacion, value1, value2)
                 self.resultados.append(operadores(self.nodo, lado , operacion, value1, value2, resultado))
-                #print("valores agregados:" + str(operacion) + " " + str(value1) + " " + str(value2) + " " + str(resultado))
                 return resultado
             
-            if operacion and operacion in ["seno"] and value1:
+            if operacion and operacion in ["seno", "coseno", "tangente", "inverso"] and value1:
                 resultado = self.matematica.operar(operacion, value1, 0)
                 self.resultados.append(operadores(self.nodo, lado ,  operacion, value1, 0, resultado))
-                #print("valores agregados:" + str(operacion) + " " + str(value1) + " " + str(0) + " " + str(resultado))
+                
                 return resultado
+
     
         return None
   
@@ -189,6 +174,7 @@ class Scanner:
 
                 
     
+    #crear el grafo
     def Arbol(self):
         
         i = 1
@@ -210,6 +196,7 @@ class Scanner:
             arbol.reiniciarOperaciones()
             
             for i in self.resultados:
+                
                 arbol.agregarOperaciones(i.operacion, i.resultado, i.valor1, i.valor2)
             
             
@@ -242,7 +229,7 @@ class Scanner:
         arbol.ConvertirArchivo()
         
         
-
+    #Buscar y corregir errores en la tabla de tokens
     def AnalisisTabla(self):
         
         i = 1
@@ -265,10 +252,105 @@ class Scanner:
             i += 1
                     
                                   
+    #Revision de strings            
+    def revString(self, strin):
+        palabras = ["operaciones", "operacion", "valor1", "valor2","suma", "resta", "multiplicacion", "division", "potencia", "modulo", "coseno" ,"seno", "tangente", "raiz" , "texto", "fondo", "fuente", "forma"]
+        string = strin.lower()
+        error = ""
+        palabra = ""
+        for i in palabras:
+
+            j = 0
+            k = 0
+            while j < len(i) and k < len(string):
+                if i[j] == string[k]:
+                    palabra += string[k]
+                    j += 1
+                    k += 1
+                    
+                else:
+                    error = string[k]
+                    k += 1
+                    
+            
+            if palabra == i:
+                    break
+            else:
+                palabra = ""
+                error = ""
+
+        return error, palabra        
+            
+     
+    #nuevo archivo        
+    def Ndatos(self):
+        
+        operaciones = {}
+        ndatos = []
+        while self.tokens:
+            self.get_instruccion()
+            
+            
+            for i in self.resultados:
+                print(i.operacion + " " + str(i.valor1) + " " + str(i.valor2) + " " + str(i.resultado))
                 
+            print("-------------------")   
+            tam = len(self.resultados)-1
+            
+            if tam >= 0:
+                ndatos.append(self.diccionario(tam)) 
             
             
+            self.resultados.clear()
             
+        operaciones["operaciones"] = ndatos   
+        operaciones["configuracion"] = self.config()
+        
+        
+         
+        with open("operaciones.json", "w") as file:
+            json.dump(operaciones, file, indent=4)
+            print("Archivo Creado")
+            
+            
+    def config (self):
+        con = []
+        config = {}
+        
+        config ["texto"] = self.configuracion[0]
+        config ["fondo"] = self.configuracion[1]
+        config ["fuente"] = self.configuracion[2]
+        config ["forma"] = self.configuracion[3]
+        
+        con.append(config)
+        
+        return con
+                   
+                
+                
+    def diccionario(self, i):
+        ndatos = []
+        dato = self.resultados[i]
+        
+
+        diccionario = {}
+        diccionario["operacion"] = dato.operacion
+        if dato.lado == "a": 
+            ndatos.append(self.diccionario(i-1))
+            diccionario["valor1"] = ndatos
+        else:
+            diccionario["valor1"] = dato.valor1
+            
+        if dato.lado == "b":
+            ndatos.append(self.diccionario(i-1))
+            diccionario["valor2"] = ndatos    
+        else:
+            diccionario["valor2"] = dato.valor2
+        
+            
+        return diccionario                   
+            
+   
         
         
 
@@ -296,87 +378,9 @@ class Scanner:
         return tipo
         
                 
-            
-    
-    
-    
-    
-    def revString(self, strin):
-        palabras = ["operaciones", "operacion", "valor1", "valor2","suma", "resta", "multiplicacion", "division", "potencia", "modulo", "seno", "coseno", "tangente", "raiz" , "texto", "fondo", "fuente", "forma"]
-        string = strin.lower()
-        error = ""
-        palabra = ""
-        for i in palabras:
-
-            j = 0
-            k = 0
-            while j < len(i) and k < len(string):
-                if i[j] == string[k]:
-                    palabra += string[k]
-                    j += 1
-                    k += 1
-                    
-                else:
-                    error = string[k]
-                    k += 1
-                    
-            
-            if palabra == i:
-                    break
-            else:
-                palabra = ""
-                error = ""
-
-        return error, palabra
-    
-    def copyTokens(self):
-        self.tokens2 = self.tokens.copy()
-    
-    def crearDiccionario(self):
-                
-        while self.tokens2:
-            tok = self.tokens2.pop(0)
-            if tok.token == "operacion":
-                operacion = self.tokens2.pop(0)
-            elif tok.token == "valor1":
-                if self.tokens[0].token == "[":
-                    valor1 = self.tokens2.pop(0)
-                valor1 = self.tokens2.pop(0)
-            elif tok.token == "valor2":
-                valor2 = self.tokens2.pop(0)           
-    
-   
-    def crearModificado(self):
-        tokens = self.tokens.copy()
-        operaciones = []
-        for i in self.tokens:
-            if i.lexema == "simbolo":
-                self.tokens.remove(i)
-                
-        while tokens:
-            tok = tokens.pop(0)
-            if tok.token == "operacion":
-                operacion = tokens.pop(0)
-            elif tok.token == "valor1":
-                if tokens[0].token == "[":
-                    valor1 = tokens.pop(0)
-                valor1 = tokens.pop(0)
-            elif tok.token == "valor2":
-                valor2 = tokens.pop(0)
-            
-                    
-        
-        
-        
-        op = {"operacion" : "operaciones" , "valor1" : "valor1", "valor2" : "valor2"}
-            
-        
-        
-            
-        
     
             
-    def crearErrores(self):
+    def crearErrores(self, nombreArchivo):
 
         diccionario = { }
         i = 0
@@ -391,9 +395,10 @@ class Scanner:
         
         diccionario ["errores"] = agregar
         
+        nombre = nombreArchivo + ".json"
         
         
-        with open("errores.json", "w") as file:
+        with open(nombre, "w") as file:
             json.dump(diccionario, file, indent=4)
             print("Archivo Creado")
 

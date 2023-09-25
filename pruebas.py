@@ -29,21 +29,11 @@ if archivo:
 leer.Analizar(contenido)
 leer.mostrarResultados()
 
-#leer.eliminarSignos()
-#leer.Arbol()
-
-
-#leer.get_instruccion()
-#leer.get_instruccion()
-#leer.get_instruccion()
+leer.eliminarSignos()
 leer.AnalisisTabla()
 print("Tabla de Simbolos")
 leer.mostrarResultados()
-#leer.mostrarResultados()
-leer.crearModificado()
-leer.mostrarResultados()
-
-
+leer.Ndatos()
 
 
 
